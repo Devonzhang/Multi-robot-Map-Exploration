@@ -1,0 +1,4 @@
+UavGroup = []
+for i in range(3):
+    uav=Uav(0,0)
+    UavGroup.append(uav)

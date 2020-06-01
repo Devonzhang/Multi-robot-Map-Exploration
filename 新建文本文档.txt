@@ -1,0 +1,22 @@
+def DivideMap():
+    t = 30
+    itemline = []
+    i = 0
+    j = 0
+    Grid = []
+    while i < t:
+        j = 0
+        while j < t:
+            item = [[0, 0], i * t + j, 0, 0, 0]
+            itemline.append(copy.deepcopy(item))
+            j += 1
+        Grid.append(copy.deepcopy(itemline))
+        itemline = []
+        i += 1
+
+    for i in range(t):
+        for j in range(t):
+            Grid[i][j][0][0] = Grid[i][j][0][0] + (i + 1)
+            Grid[i][j][0][1] = Grid[i][j][0][1] + (j + 1)
+    return Grid
+
