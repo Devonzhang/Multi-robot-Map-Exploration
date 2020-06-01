@@ -2,7 +2,6 @@ import numpy as np
 import random
 
 '''
-
 Map是大地图矩阵
 
           Map[9][7][8]表示子区域9上坐标为(7,8)的栅格的所有信息
@@ -12,18 +11,15 @@ Map是大地图矩阵
           Map[9][7][8][3]='0' or '1' or '2' or '3'  表示机器人可以得知的栅格状态为 未探索、探索过的可达栅格、障碍栅格、边界栅格
           Map[9][7][8][4]=0 or 1 表示地图默认信息 可达、有障碍
 
-
-
 Area是子区域矩阵
 
           Area[0][0][1]=m   表示Area中0行0列元素第1项是第m个子区域
           Area[0][0][2]='0' or '1' or '2'   表示第m个子区域的未探索，正在被探索，已被探索
 
-
-
-
-
 '''
+
+#地图大小全局定义
+Map_Size = 100
 
 
 # A*算法，返回最近的路
@@ -38,26 +34,45 @@ def Get_Nearest_Border_Grid(Uav, Map):
     Grid_Position = [-1, -1]
     # 这中间写计算算法计算出位置传给Grid_Position
     Uav_Position = Uav.location
-    while 1:
+    flag = 0
+    while flag == 0:
         # 每次检索的格子大小用n决定
         n = 1
         # i表示x
-        for i in range(Uav_Position[0] - n, Uav_Position[0] + n + 1):
+        for i in range(Get_Smaller(0, Uav_Position[0] - n), Get_Bigger(Map_Size, Uav_Position[0] + n + 1)):
             # j表示y
-            for j in range(Uav_Position[1] - n, Uav_Position[1] + n + 1):
+            for j in range(Get_Smaller(0, Uav_Position[1] - n), Get_Bigger(Map_Size, Uav_Position[1] + n + 1)):
                 if Map[Uav.NoSubArea][i][j][3] == '3':
                     Grid_Position[0] = i
                     Grid_Position[1] = j
-                    break
+                    flag = 1
+        if (Uav_Position[0] + n + 1) > Map_Size and (Uav_Position[1] + n + 1) > Map_Size:
+            flag = -1
+
         # 没找到，扩大搜索范围
         n += 1
 
         # 求了个寂寞
-    if Grid_Position == [-1, -1]:
+    if flag == -1:
+        print('搜索完毕全部覆盖')
         return 0
     # 求到了
     else:
         return Grid_Position
+
+
+def Get_Smaller(a, b):
+    if a <= b:
+        return a
+    else:
+        return b
+
+
+def Get_Bigger(a, b):
+    if a >= b:
+        return a
+    else:
+        return b
 
 
 # 计算个体历史最优--邻居栅格里面在A*算法求出的去最近的边界栅格的路上的四个栅格中的一个
