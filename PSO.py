@@ -18,7 +18,7 @@ Area是子区域矩阵
 
 '''
 
-#地图大小全局定义
+# 地图大小全局定义
 Map_Size = 100
 
 
@@ -148,7 +148,8 @@ def Get_Least_Robot_Direction(Uav, Area):
 
 
 # 粒子群算法
-def PSO_choose(Uav, Map):
+# Uav是一个机器人，Map是大地图矩阵，Area是子区域矩阵
+def PSO_choose(Uav, Map, Area):
     # 对个体最优的加权
     c1 = 1
     # 对全局最优的加权
@@ -157,7 +158,7 @@ def PSO_choose(Uav, Map):
     c3 = 0.5
     # 计算个体最优以及全局最优
     Personal_Best = Get_Personal_Best_Grid(Uav, Map)
-    Overall_Best = Get_Least_Robot_Direction(Uav, Map)
+    Overall_Best = Get_Least_Robot_Direction(Uav, Area)
     Random_Direction = random.randint(0, 3)
 
     # 判断方向
